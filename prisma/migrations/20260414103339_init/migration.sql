@@ -11,5 +11,6 @@ CREATE TABLE "Profile" (
     "country_probability" REAL NOT NULL,
     "created_at" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
+
 -- CreateIndex
 CREATE UNIQUE INDEX "Profile_name_key" ON "Profile"("name");
