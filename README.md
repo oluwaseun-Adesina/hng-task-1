@@ -20,30 +20,39 @@ A REST API that aggregates data from three external sources (Genderize, Agify, N
    npm install
    ```
 2. Set up database:
-   - Locally with SQLite (default):
-     ```bash
-     npx prisma migrate dev --name init
-     ```
-   - With Aiven/Postgres or another Postgres service:
-     1. Set `DATABASE_URL` to your Postgres connection string.
-        Example:
-        ```env
-        DATABASE_URL="postgresql://USERNAME:PASSWORD@HOST:PORT/DATABASE?sslmode=require"
-        ```
-     2. Run:
-        ```bash
-        npx prisma migrate deploy
-        ```
+   1. Set `DATABASE_URL` to your PostgreSQL connection string.
+      Example:
+      ```env
+      DATABASE_URL="postgresql://USERNAME:PASSWORD@HOST:PORT/DATABASE?sslmode=require"
+      ```
+   2. Run migrations:
+      ```bash
+      npx prisma migrate deploy
+      ```
 3. Run the server:
    ```bash
    npm start
    ```
+   This will build the project first via the `prestart` hook.
+
+## API Endpoints
+
+- `POST /api/profiles`
+  - Body: `{ "name": "ella" }`
+  - Returns profile data or the existing profile if submitted again.
+- `GET /api/profiles/{id}`
+  - Returns a single profile by UUID.
+- `GET /api/profiles`
+  - Optional query params: `gender`, `country_id`, `age_group`
+  - Returns filtered profile list and `count`.
+- `DELETE /api/profiles/{id}`
+  - Removes a profile and returns `204 No Content`.
 
 ## Deployment notes
 
 - Build command: `npm install && npm run build`
 - Start command: `npm start`
-- On Render, set `DATABASE_URL` in the service environment variables.
+- In hosted environments, set `DATABASE_URL` in service environment variables.
 
 ## Tech Stack
 
