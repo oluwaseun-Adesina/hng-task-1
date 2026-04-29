@@ -18,6 +18,8 @@ RUN npx tsc
 
 FROM node:22-alpine
 
+RUN apk add --no-cache openssl
+
 WORKDIR /app
 
 COPY package*.json ./
@@ -28,7 +30,9 @@ RUN npm ci --omit=dev && npx prisma generate
 
 COPY --from=builder /app/dist ./dist/
 
-EXPOSE 3001
+EXPOSE 8080
+
+ENV PORT=8080
 
 # Run migrations + seed + server at container startup
 CMD ["sh", "-c", "npx prisma migrate deploy && node dist/seed.js && node dist/index.js"]
